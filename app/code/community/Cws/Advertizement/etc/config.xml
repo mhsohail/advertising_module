@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Cybage Marketplace Plugin
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * It is available on the World Wide Web at:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you are unable to access it on the World Wide Web, please send an email
+ * To: Support_Magento@cybage.com.  We will send you a copy of the source file.
+ *
+ * @category   Marketplace Plugin
+ * @package    Cws_Advertizement
+ * @copyright  Copyright (c) 2014 Cybage Software Pvt. Ltd., India
+ *             http://www.cybage.com/pages/centers-of-excellence/ecommerce/ecommerce.aspx
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author     Cybage Software Pvt. Ltd. <Support_Magento@cybage.com>
+ */
+-->
+<config>
+    <modules>
+        <Cws_Advertizement>
+            <version>1.3.7</version>
+        </Cws_Advertizement>
+    </modules>
+   <!-- <default>
+        <advertizement_catalog>
+            <advertizement_presentation>
+                <account_page_label>My Supplier Frontend Product Uploader Panel</account_page_label>
+                <show_header>0</show_header>
+                <show_footer>0</show_footer>
+                <include_jquery>1</include_jquery>
+            </advertizement_presentation>
+        </advertizement_catalog>
+        <advertizement_products>
+            <advertizement_catalog_config>
+                <sku_schema>100001</sku_schema>
+                <tax_class_id>0</tax_class_id>
+                <images_count>3</images_count>
+            </advertizement_catalog_config>
+        </advertizement_products>
+    </default>-->
+    <global>
+		<blocks>
+            <advertizement>
+                <class>Cws_Advertizement_Block</class>
+            </advertizement>            
+        </blocks>
+       <models>
+            <advertizement>
+                <class>Cws_Advertizement_Model</class>
+                <resourceModel>advertizement_resource</resourceModel>
+            </advertizement>
+            <advertizement_resource>
+                <class>Cws_Advertizement_Model_Resource</class>                               
+                <entities>                    
+                    <advertizement>
+                        <table>advertizement_advertizement</table>
+                    </advertizement>                    
+                </entities>                
+            </advertizement_resource>
+          <!-- <customer_resource>
+                <rewrite>
+                    <customer>Cws_Advertizement_Model_Resource_Customer</customer>
+                </rewrite>
+            </customer_resource> -->
+            <sales>
+                <rewrite>
+                    <!--<order>Cws_Advertizement_Model_Order</order>-->
+                </rewrite>
+            </sales>
+        </models>
+      <resources>
+            <advertizement_setup>
+                <setup>
+                    <module>Cws_Advertizement</module>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
+                </setup>
+            </advertizement_setup>
+        </resources>
+        <helpers>
+            <advertizement>
+                <class>Cws_Advertizement_Helper</class>
+            </advertizement>
+        </helpers>
+    </global>
+    <frontend>
+        <routers>
+            <cws_advertizement>
+                <use>standard</use>
+                <args>
+                    <module>Cws_Advertizement</module>
+                    <frontName>advertizement</frontName>
+                </args>
+            </cws_advertizement>
+        </routers>
+        <layout>
+            <updates>
+                <advertizement>
+                    <file>cws_advertizement.xml</file>
+                </advertizement>
+            </updates>
+        </layout>
+    </frontend>
+</config>

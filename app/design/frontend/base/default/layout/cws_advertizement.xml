@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<layout version="1.0.0">
+ <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="advertizement">
+                <name>advertizement</name>
+                <path>advertizement/</path>
+                <label>Advertising Management</label>
+            </action>
+        </reference>
+    </customer_account>		
+       <cws_advertizement_index_index>
+        <remove name="right"/>
+        <remove name="left"/>
+        <action method="setTemplate">
+            <template>page/1column.phtml</template>
+        </action>   
+        <update handle="customer_account"/>
+        <reference name="head">
+			<action method="setTitle" translate="title" module="advertizement">
+                <title>Advertising</title>
+            </action>
+			<!-- the above code works well. the following code shows the following error message,
+			when we visit the link http://localhost/clikaroo/index.php/advertizement/ from customer dashboard
+			so i commented it i think, the below code wants to communicate with another module called marketplace
+			-->
+			<!--
+				( ! ) Fatal error: Class 'Mage_Marketplace_Helper_Data' not found in E:\wamp\www\clikaroo\app\Mage.php on line 547
+			-->
+			<!--
+			<action method="setTitle" translate="title" module="marketplace">
+                <title>Advertising</title>
+            </action>
+			-->
+        </reference>
+       <reference name="content">
+            <!-- <block type="advertizement/navbar" name="advertizement_nav" template="/advertizement/nav1.phtml"/> -->
+        <block type="advertizement/advertizement" name="advertizement_advertizement" template="advertizement/advertizement.phtml"/>
+              <!--    <block type="advertizement/collection" name="advertizement_collection" template="advertizement/collection.phtml"/>-->
+        </reference>
+     <!--    <reference name="content">
+            <block type="supplierfrontendproductuploader/navbar" name="supplierfrontendproductuploader_nav1" template="/supplierfrontendproductuploader/nav1.phtml"/>
+            <block type="supplierfrontendproductuploader/dashboard" name="supplierfrontendproductuploader_dashboard1"
+                   template="supplierfrontendproductuploader/dashboard1.phtml"/>
+        </reference>-->
+    </cws_advertizement_index_index>    
+    <cws_advertizement_index_add>
+        <remove name="right"/>
+        <remove name="left"/>
+        <reference name="head">            
+            <action method="setTitle" translate="title" module="advertizement">
+                <title>Add Advertising Area</title>
+            </action>
+			
+			<!-- the above code works well. the following code shows the following error message,
+			when we visit the link http://localhost/clikaroo/index.php/advertizement/index/add/ from customer dashboard
+			so i commented it i think, the below code wants to communicate with another module called marketplace
+			-->
+			<!--
+				( ! ) Fatal error: Class 'Mage_Marketplace_Helper_Data' not found in E:\wamp\www\clikaroo\app\Mage.php on line 547
+			-->
+			<!--
+			<action method="setTitle" translate="title" module="marketplace">
+                <title>Add Advertising Area</title>
+            </action>
+			-->
+        </reference>
+        <action method="setTemplate">
+            <template>page/1column.phtml</template>
+        </action>   
+        <update handle="customer_account"/>
+       <reference name="content">            
+        <block type="advertizement/add" name="advertizement_add" template="advertizement/add.phtml"/>              
+        </reference>
+    </cws_advertizement_index_add>
+	
+	<!-- layout for editing advertisement -->
+	<cws_advertizement_index_edit>
+        <remove name="right"/>
+        <remove name="left"/>
+        <reference name="head">            
+            <action method="setTitle" translate="title" module="advertizement">
+                <title>Edit Advertising Area</title>
+            </action>
+			
+			<!-- the above code works well. the following code shows the following error message,
+			when we visit the link http://localhost/clikaroo/index.php/advertizement/index/add/ from customer dashboard
+			so i commented it i think, the below code wants to communicate with another module called marketplace
+			-->
+			<!--
+				( ! ) Fatal error: Class 'Mage_Marketplace_Helper_Data' not found in E:\wamp\www\clikaroo\app\Mage.php on line 547
+			-->
+			<!--
+			<action method="setTitle" translate="title" module="marketplace">
+                <title>Add Advertising Area</title>
+            </action>
+			-->
+        </reference>
+        <action method="setTemplate">
+            <template>page/1column.phtml</template>
+        </action>   
+        <update handle="customer_account"/>
+       <reference name="content">            
+        <block type="advertizement/edit" name="advertizement_edit" template="advertizement/edit.phtml"/>              
+        </reference>
+    </cws_advertizement_index_edit>
+</layout>
