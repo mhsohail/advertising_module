@@ -23,7 +23,11 @@ color: #fff !important;
 $getAllCategoriesDATA= Mage::helper('advertizement')->getAllCategoriesDATA();
 //print_r($getAllCategoriesDATA);?>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
-<?php $collection = $this->getCollection(); ?>
+<?php
+$vendor = Mage::getSingleton('udropship/session');
+$vendor_id = $vendor->getVendorId();
+$collection = $this->getCollection()->addFieldToFilter('merchant_id',$vendor_id);
+?>
 <div class="page-title adverizent">
     <h1><?php echo $this->__('My Advertising') ?></h1>
    <a href="<?php echo $this->getUrl('advertizement/index/add') ?>" class="common-orange-button"><?php echo $this->__('Add Advertise') ?></a><div class="clear"></div>
