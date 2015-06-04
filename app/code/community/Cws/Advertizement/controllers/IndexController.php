@@ -1,16 +1,10 @@
 <?php
 class Cws_Advertizement_IndexController extends Mage_Core_Controller_Front_Action {
-
-/**
-     *    Create session 
-     * */
+	
     protected function _getSession() {
         return Mage::getSingleton('advertizement/session');
     }
-
-/**
-     *    validate Customer Login and redirect previous page 
-     * */
+	
     protected function _validateCustomerLogin() {
         $session = Mage::getSingleton('customer/session');
         if (!$session->isLoggedIn()) {
@@ -22,23 +16,21 @@ class Cws_Advertizement_IndexController extends Mage_Core_Controller_Front_Actio
             $this->_redirect('customer/account/');
         }
     }
-
-
+	
     public function indexAction() {
-      $this->_validateCustomerLogin();
+		$this->_validateCustomerLogin();
 		$this->loadLayout();  
 		$this->_initLayoutMessages('advertizement/session');  
-       $this->renderLayout();
-      // $this->loadLayout()->renderLayout();
-     
-    }
-    public function addAction() {
+		$this->renderLayout();
+		// $this->loadLayout()->renderLayout();
+	}
+    
+	public function addAction() {
 		$this->_validateCustomerLogin();
-		$this->loadLayout();    
-		$this->_initLayoutMessages('advertizement/session');  
-        $this->renderLayout();    
-     
-    }
+		$this->loadLayout();
+		$this->_initLayoutMessages('advertizement/session');
+        $this->renderLayout();
+	}
 	
 	public function editAction() {
 		$this->_validateCustomerLogin();
@@ -123,64 +115,58 @@ class Cws_Advertizement_IndexController extends Mage_Core_Controller_Front_Actio
 		
 		if(isset($_FILES['advertizement-image']['name']) and (file_exists($_FILES['advertizement-image']['tmp_name']))) {
 		try {
-		$uploader = new Varien_File_Uploader('advertizement-image');
-		//print_r($uploader);
-		$uploader->setAllowedExtensions(array('jpg','jpeg','gif','png')); // or pdf or anything
-
-
-		$uploader->setAllowRenameFiles(false);
-		$new_file_name=time().$customer_id;
-		// setAllowRenameFiles(true) -> move your file in a folder the magento way
-		// setAllowRenameFiles(true) -> move your file directly in the $path folder
-		$uploader->setFilesDispersion(false);
-
-		$path = Mage::getBaseDir('media') . DS."advertizement/" ;
-				   
-				   $uplaoedFilename=$new_file_name.$_FILES['advertizement-image']['name'];
-					$uploader->save($path, $new_file_name.$_FILES['advertizement-image']['name']);
-		//$uploader->save($path, $new_file_name);
-
-					$data['advertizement-image'] = $new_file_name.$_FILES['advertizement-image']['name'];
-		
-		//$data['advertizement-image'] = $new_file_name;
-		
-		/* SAVE POSTED DATA **/
-		$data               = Mage::app()->getRequest()->getPost();
-		$all_categories=@implode(',', $data['category_ids']);		
-		$contactproModel = Mage::getModel('advertizement/advertizement');
-                 $contactproModel->load($this->getRequest()->getParam('advertizement_id'));
-               if(!empty($data) and $contactproModel->getId() ){
-                $contactproModel
-                    ->setMerchant_id($customer_id)
-                    ->setStore_id($data['stores'])
-                    ->setCategories($all_categories)
-                    ->setAddvertizement_banner($uplaoedFilename)
-					->setIp_address($this->getUserIpAddress())
-					->setPage_location($data['page_location'])
-                    ->save();
-               }
-               elseif(!empty($data)){
-                    Mage::getModel('advertizement/advertizement')
-                    ->setMerchant_id($customer_id)
-                    ->setStore_id($data['stores'])
-                    ->setCategories($all_categories)
-                    ->setAddvertizement_banner($uplaoedFilename)
-					->setIp_address($this->getUserIpAddress())
-					->setPage_location($data['page_location'])                    
-                    ->save();
-               }
-                    Mage::getSingleton('core/session')->addSuccess('successfully saved');
-                    Mage::getSingleton('core/session')->settestData(false);
-		//print_r($data);
-		//exit;
-		/* ENd SAVE POSTED DATA */
-		
-		
-		
-		}catch(Exception $e) {
-Mage::getSingleton('core/session')->addSuccess($e);
+			$image_info = getimagesize($_FILES["advertizement-image"]["tmp_name"]);
+			$image_width = $image_info[0];
+			$image_height = $image_info[1];
+			if(($image_width != 1080) || ($image_height != 160)) {
+				Mage::getSingleton('core/session')->addSuccess('Allowed image dimensions are 1080 x 160');
+				$this->_redirect("*/*/");
+			} else {
+				$uploader = new Varien_File_Uploader('advertizement-image');
+				//print_r($uploader);
+				$uploader->setAllowedExtensions(array('jpg','jpeg','gif','png')); // or pdf or anything
+				$uploader->setAllowRenameFiles(false);
+				$new_file_name=time().$customer_id;
+				// setAllowRenameFiles(true) -> move your file in a folder the magento way
+				// setAllowRenameFiles(true) -> move your file directly in the $path folder
+				$uploader->setFilesDispersion(false);
+				$path = Mage::getBaseDir('media') . DS."advertizement/" ;
+				$uplaoedFilename=$new_file_name.$_FILES['advertizement-image']['name'];
+				$uploader->save($path, $new_file_name.$_FILES['advertizement-image']['name']);
+				//$uploader->save($path, $new_file_name);
+				$data['advertizement-image'] = $new_file_name.$_FILES['advertizement-image']['name'];
+				//$data['advertizement-image'] = $new_file_name;
+				/* SAVE POSTED DATA **/
+				$data               = Mage::app()->getRequest()->getPost();
+				$all_categories=@implode(',', $data['category_ids']);		
+				$contactproModel = Mage::getModel('advertizement/advertizement');
+				$contactproModel->load($this->getRequest()->getParam('advertizement_id'));
+				if(!empty($data) and $contactproModel->getId() ) {
+					$contactproModel
+						->setMerchant_id($customer_id)
+						->setStore_id($data['stores'])
+						->setCategories($all_categories)
+						->setAddvertizement_banner($uplaoedFilename)
+						->setIp_address($this->getUserIpAddress())
+						->setPage_location($data['page_location'])
+						->save();
+				} elseif(!empty($data)) {
+					Mage::getModel('advertizement/advertizement')
+						->setMerchant_id($customer_id)
+						->setStore_id($data['stores'])
+						->setCategories($all_categories)
+						->setAddvertizement_banner($uplaoedFilename)
+						->setIp_address($this->getUserIpAddress())
+						->setPage_location($data['page_location'])                    
+						->save();
+				}
+				Mage::getSingleton('core/session')->addSuccess('successfully saved');
+				Mage::getSingleton('core/session')->settestData(false);
+			}
+		} catch(Exception $e) {
+			Mage::getSingleton('core/session')->addSuccess($e);
 		}
-}
+	}
 	 $this->_redirect("*/*/");
 	}
 	
@@ -256,7 +242,6 @@ Mage::getSingleton('core/session')->addSuccess($e);
 		$this->_redirect("*/*/");
 	}
 	
-	
 	public function statusAction()
 	{
 		 $id = $this->getRequest()->getParam('id');
@@ -294,9 +279,5 @@ Mage::getSingleton('core/session')->addSuccess($e);
 		}
 		return $ip;
 	}
-	
-	
-	
-	
 }
 
